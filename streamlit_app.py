@@ -114,9 +114,9 @@ st.header('Airline capacity (seats) over time', divider='gray')
 
 ''
 
-st.line_chart(
+st.bar_chart(
     filtered_df,
-    x='Month',
+    x='Year',
     y='MaxSeats',
     color='Airline',
 )
