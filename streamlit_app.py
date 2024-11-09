@@ -70,7 +70,7 @@ df = get_data()
 
 # Set the title that appears at the top of the page.
 '''
-# :earth_americas: Australia International Airline Capacity
+# :earth_americas: Australia Domestic Airfares
 
 Browse Airline capacity data from the [BITRE Open Data](https://www.bitre.gov.au/) website. 
 '''
