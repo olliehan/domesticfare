@@ -5,7 +5,7 @@ from pathlib import Path
 
 # Set the title and favicon that appear in the Browser's tab bar.
 st.set_page_config(
-    page_title='Australia International Airline Capacity',
+    page_title='Domesticc Airfares',
     page_icon=':earth_americas:', # This is an emoji shortcode. Could be a URL too.
 )
 
@@ -25,7 +25,7 @@ def get_data():
     # DATA_FILENAME = Path(__file__).parent/'data/gdp_data.csv'
     # raw_gdp_df = pd.read_csv(DATA_FILENAME)
 
-    DATA_FILENAME = Path(__file__).parent/'data/INT.csv'
+    DATA_FILENAME = Path(__file__).parent/'data/Fares.csv'
     df = pd.read_csv(DATA_FILENAME)
 
     # df.rename(columns={'Financial Year': 'FY'}, inplace=True)
@@ -58,7 +58,7 @@ def get_data():
    # )
 
     # Convert years from string to integers
-    #df['FY'] = pd.to_numeric(df['FY'])
+    df['Year'] = pd.to_numeric(df['Year'])
     #df['MaxSeats'] = pd.to_numeric(df['MaxSeats'])
 
     return df
@@ -82,22 +82,22 @@ Browse Airline capacity data from the [BITRE Open Data](https://www.bitre.gov.au
 min_value = df['Year'].min()
 max_value = df['Year'].max()
 
-from_year, to_year = st.slider(
+from_Date, to_Date = st.slider(
     'Which years are you interested in?',
     min_value=min_value,
     max_value=max_value,
     value=[min_value, max_value])
 
-Airline = df['Airline'].unique().tolist()
+Route = df['Route'].unique().tolist()
 
-if not len(Airline):
-   st.warning("Select at least one Airline")
+if not len(Route):
+   st.warning("Select at least one Route")
 
-selected_airlines = st.multiselect(
-    label = "Which airline would you like to view?",
-    options = Airline,
-    default = 'Garuda Indonesia',
-    max_selections = 1)
+selected_routes = st.multiselect(
+    label = "Which route would you like to view?",
+    options = Route,
+    default = 'Adelaide - Brisbane',
+    max_selections = 10)
 
 ''
 ''
@@ -105,19 +105,19 @@ selected_airlines = st.multiselect(
 
 # Filter the data
 filtered_df = df[
-    (df['Airline'].isin(selected_airlines))
-    & (df['Year'] <= to_year)
-    & (from_year <= df['Year'])
+    (df['Route'].isin(selected_routes))
+    & (df['Year'] <= to_Date)
+    & (from_Date <= df['Year'])
 ]
 
-st.header('Airline capacity (seats) over time', divider='gray')
+st.header('Airline domestic fares over time', divider='gray')
 
 ''
 
-st.bar_chart(
+st.line_chart(
     filtered_df,
-    x='Year',
-    y='MaxSeats',
-    color='Airline',
+    x='Date',
+    y='$Value',
+    color='Route',
 )
 
